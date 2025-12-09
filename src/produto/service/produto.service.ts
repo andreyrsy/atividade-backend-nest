@@ -11,11 +11,14 @@ export class ProdutoService {
     ) {}
 
     async findAll(): Promise<Produto[]> {
-        return await this.produtoRepository.find();
+        return await this.produtoRepository.find({ relations: ['categoria'] });
     }
 
     async findById(id: number): Promise<Produto> {
-        const produto = await this.produtoRepository.findOne({ where: { id } });
+        const produto = await this.produtoRepository.findOne({ 
+            where: { id },
+            relations: ['categoria']
+        });
         
         if (!produto) {
             throw new HttpException(`Produto com ID ${id} não encontrado`, HttpStatus.NOT_FOUND);
@@ -43,6 +46,9 @@ export class ProdutoService {
     }
 
     async produtosAtivos(): Promise<Produto[]> {
-        return await this.produtoRepository.find({where: {ativo: true}});
+        return await this.produtoRepository.find({
+            where: { ativo: true },
+            relations: ['categoria']
+        });
     }
 }
