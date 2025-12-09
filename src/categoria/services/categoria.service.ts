@@ -25,12 +25,6 @@ export class CategoriaService {
     }
 
     async create(categoria: Categoria): Promise<Categoria> {
-        const categoriaAtivaOuNao = await this.categoriaRepository.findOne({ where: { ativo: true } });
-        
-        if (categoriaAtivaOuNao) {
-            throw new HttpException(`Categoria com ID ${categoriaAtivaOuNao.id} não está ativa`, HttpStatus.BAD_REQUEST);
-        }
-        
         return await this.categoriaRepository.save(categoria);
     }
 
